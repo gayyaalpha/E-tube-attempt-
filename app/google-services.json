@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "38556757399",
+    "project_id": "e-tube-812ee",
+    "storage_bucket": "e-tube-812ee.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:38556757399:android:6697dbdc4d8bf539c368d2",
+        "android_client_info": {
+          "package_name": "com.example.etubeattempt2"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "38556757399-gda42mhdjlqduekl34t7jtfru11l8lu5.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB24svgicAOmB2MWRkPkxrIRB13-kIYVtU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "38556757399-gda42mhdjlqduekl34t7jtfru11l8lu5.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
