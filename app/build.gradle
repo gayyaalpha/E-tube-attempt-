@@ -53,6 +53,9 @@ android {
             universalApk false
         }
     }
+    buildFeatures {
+        viewBinding true
+    }
 }
 
 dependencies {
@@ -66,7 +69,10 @@ dependencies {
     implementation project(path: ':commonlib')
     implementation 'lk.payhere:androidsdk:2.0.31'  // PayHere SDK
     implementation 'com.google.code.gson:gson:2.8.0'
-    implementation 'com.google.firebase:firebase-storage:20.0.0'// ignore if you have already added
+    implementation 'com.google.firebase:firebase-storage:20.0.0'
+    implementation 'androidx.lifecycle:lifecycle-livedata-ktx:2.3.1'
+    implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.3.1'
+// ignore if you have already added
     testImplementation 'junit:junit:4.+'
     androidTestImplementation 'androidx.test.ext:junit:1.1.3'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0'
