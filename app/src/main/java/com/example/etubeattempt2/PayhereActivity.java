@@ -43,12 +43,14 @@ public class PayhereActivity extends AppCompatActivity {
     private String classYear , classMonth;
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
     private DocumentReference noteRef;
+    private  TextView textView;
 
 
 
     private final static int PAYHERE_REQUEST = 11010;
     private final static  String merchantID = "1218101";
     private final static  String merchantSecret = "4a9v8PgEjzh4Utli0Yq5sw8LONfKIalkJ8X12ocsggyu";
+
 
 
     @Override
@@ -66,6 +68,7 @@ public class PayhereActivity extends AppCompatActivity {
         addressText = findViewById(R.id.address);
         cityText = findViewById(R.id.city);
         countryText = findViewById(R.id.country);
+        textView = findViewById(R.id.textView);
 
         currentFirebaseUser = FirebaseAuth.getInstance().getCurrentUser() ;
 
@@ -117,50 +120,75 @@ public class PayhereActivity extends AppCompatActivity {
         });
     }
 
+
+
     @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data ) {
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == PAYHERE_REQUEST && data != null && data.hasExtra(PHConstants.INTENT_EXTRA_RESULT)) {
             PHResponse<StatusResponse> response = (PHResponse<StatusResponse>) data.getSerializableExtra(PHConstants.INTENT_EXTRA_RESULT);
             if (resultCode == Activity.RESULT_OK) {
                 String msg;
                 if (response != null)
-                    if (response.isSuccess()){
-                        msg = "Activity result:" + response.getData().toString() + resultCode;
-//                        SharedPreferences.Editor editor = sp.edit();
-//                        editor.putBoolean("paymentStatus" , true);
-//                        editor.commit();
-                        Toast.makeText(PayhereActivity.this, "payment successful", Toast.LENGTH_SHORT).show();
-                        Intent intent = new Intent(PayhereActivity.this ,MainActivity.class);
-                        intent.putExtra("paymentStatus" , true);
-                        startActivity(intent);
-
-
-                    }
-
-
-                    else{
+                    if (response.isSuccess())
+                        msg = "Activity result:" + response.getData().toString();
+                    else
                         msg = "Result:" + response.toString();
-//                        Toast.makeText(PayhereActivity.this, "payment unsuccessful", Toast.LENGTH_SHORT).show();
-                    }
-
                 else
                     msg = "Result: no response";
                 Log.d("TAG", msg);
-//                textView.setText(msg);
-//                Toast.makeText(PayhereActivity.this, "payment unsuccessful", Toast.LENGTH_SHORT).show();
+                textView.setText(msg);
             } else if (resultCode == Activity.RESULT_CANCELED) {
-                if (response != null){
-//                    textView.setText(response.toString());
-//                    Toast.makeText(PayhereActivity.this, "payment unsuccessful", Toast.LENGTH_SHORT).show();
-                }
-                else{
-//                    textView.setText("User canceled the request");
-//                    Toast.makeText(PayhereActivity.this, "payment unsuccessful", Toast.LENGTH_SHORT).show();
-                }
+                if (response != null)
+                    textView.setText(response.toString());
+                else
+                    textView.setText("User canceled the request");
             }
         }
     }
+
+//    @Override
+//    protected void onActivityResult(int requestCode, int resultCode, Intent data ) {
+//        super.onActivityResult(requestCode, resultCode, data);
+//        if (requestCode == PAYHERE_REQUEST && data != null && data.hasExtra(PHConstants.INTENT_EXTRA_RESULT)) {
+//            PHResponse<StatusResponse> response = (PHResponse<StatusResponse>) data.getSerializableExtra(PHConstants.INTENT_EXTRA_RESULT);
+//            if (resultCode == Activity.RESULT_OK) {
+//                String msg;
+//                if (response != null)
+//                    if (response.isSuccess()){
+//                        msg = "Activity result:" + response.getData().toString() + resultCode;
+////                        SharedPreferences.Editor editor = sp.edit();
+////                        editor.putBoolean("paymentStatus" , true);
+////                        editor.commit();
+//                        Toast.makeText(PayhereActivity.this, "payment successful", Toast.LENGTH_SHORT).show();
+////                        Intent intent = new Intent(PayhereActivity.this ,MainActivity.class);
+////                        intent.putExtra("paymentStatus" , true);
+////                        startActivity(intent);
+//                    }
+//
+//
+//                    else{
+//                        msg = "Result:" + response.toString();
+////                        Toast.makeText(PayhereActivity.this, "payment unsuccessful", Toast.LENGTH_SHORT).show();
+//                    }
+//
+//                else
+//                    msg = "Result: no response";
+//                Log.d("TAG", msg);
+//                textView.setText(msg);
+//                Toast.makeText(PayhereActivity.this, "payment unsuccessful", Toast.LENGTH_SHORT).show();
+//            } else if (resultCode == Activity.RESULT_CANCELED) {
+//                if (response != null){
+//                    textView.setText(response.toString());
+//                    Toast.makeText(PayhereActivity.this, "payment unsuccessful", Toast.LENGTH_SHORT).show();
+//                }
+//                else{
+//                    textView.setText("User canceled the request");
+//                    Toast.makeText(PayhereActivity.this, "payment unsuccessful", Toast.LENGTH_SHORT).show();
+//                }
+//            }
+//        }
+//    }
 
 
 
