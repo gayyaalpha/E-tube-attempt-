@@ -131,15 +131,7 @@ public class MainActivity extends AppCompatActivity {
 
         initializeSdk(this);
 
-        logoutButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                auth.signOut();
-                Toast.makeText(MainActivity.this, "logged out", Toast.LENGTH_SHORT).show();
-                startActivity(new Intent(MainActivity.this, LoginActivity.class));
-                finish();
-            }
-        });
+
         join.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
