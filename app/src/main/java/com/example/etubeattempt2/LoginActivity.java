@@ -87,13 +87,13 @@ public class LoginActivity extends AppCompatActivity {
 
                 if (documentSnapshot.getString("isUser") != null){
                     if(documentSnapshot.getBoolean("isFree")){
-                        Intent intent = new Intent(LoginActivity.this , MainActivity.class);
+                        Intent intent = new Intent(LoginActivity.this , fragmentActivity.class);
                         intent.putExtra("isFree" , true);
                         startActivity(intent);
                         finish();
                     }
                     else if (!(documentSnapshot.getBoolean("isFree"))){
-                        Intent intent = new Intent(LoginActivity.this , MainActivity.class);
+                        Intent intent = new Intent(LoginActivity.this , fragmentActivity.class);
                         intent.putExtra("isFree" , false);
                         startActivity(intent);
                         finish();
