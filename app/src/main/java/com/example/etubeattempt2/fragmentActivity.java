@@ -6,6 +6,8 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.tabs.TabLayout;
 
+import androidx.annotation.CallSuper;
+import androidx.annotation.MainThread;
 import androidx.viewpager.widget.ViewPager;
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -32,7 +34,7 @@ public class fragmentActivity extends AppCompatActivity {
         viewPager.setAdapter(sectionsPagerAdapter);
         TabLayout tabs = binding.tabs;
         tabs.setupWithViewPager(viewPager);
-     //   FloatingActionButton fab = binding.fab;
+        //   FloatingActionButton fab = binding.fab;
 
 //        fab.setOnClickListener(new View.OnClickListener() {
 //            @Override
@@ -41,5 +43,19 @@ public class fragmentActivity extends AppCompatActivity {
 //                        .setAction("Action", null).show();
 //            }
 //        });
+//        public void onStop() {
+//            super.onStop();
+//            adapter.stopListening();
+////        mCalled = true;
+//        }
+//
+//
+//
+//        public void onStart() {
+////        mCalled = true;
+//         int a = 5;
+////        adapter.startListening();
+//        }
+//    }
     }
 }

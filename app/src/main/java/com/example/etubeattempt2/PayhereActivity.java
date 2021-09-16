@@ -106,26 +106,31 @@ public class PayhereActivity extends AppCompatActivity {
                 req.getCustomer().getAddress().setCity(city);
                 req.getCustomer().getAddress().setCountry(country);
 
+                // Optional Param
+                req.setStartupFee(0);               // +/- Adjustment to the fist charge
 
 
                 Intent intent = new Intent(PayhereActivity.this, PHMainActivity.class);
                 intent.putExtra(PHConstants.INTENT_EXTRA_DATA, req);
                 PHConfigs.setBaseUrl(PHConfigs.SANDBOX_URL);
                 startActivityForResult(intent, PAYHERE_REQUEST); //unique request ID like private final static int PAYHERE_REQUEST = 11010;
+                Toast.makeText(PayhereActivity.this, "comming through", Toast.LENGTH_SHORT).show();
+                Intent intentBack = new Intent(PayhereActivity.this,MainActivity.class);
 
-                onActivityResult(11010 , 5 , intent  );
+
+
+
+                onActivityResult(11010 , 2 , intentBack  );
 
 
             }
         });
     }
 
-
-
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == PAYHERE_REQUEST && data != null && data.hasExtra(PHConstants.INTENT_EXTRA_RESULT)) {
+        if (requestCode == PAYHERE_REQUEST && data != null && data.hasExtra(PHConstants.INTENT_EXTRA_RESULT )) {
             PHResponse<StatusResponse> response = (PHResponse<StatusResponse>) data.getSerializableExtra(PHConstants.INTENT_EXTRA_RESULT);
             if (resultCode == Activity.RESULT_OK) {
                 String msg;
@@ -136,9 +141,11 @@ public class PayhereActivity extends AppCompatActivity {
                         msg = "Result:" + response.toString();
                 else
                     msg = "Result: no response";
+                Toast.makeText(PayhereActivity.this, msg, Toast.LENGTH_SHORT).show();
                 Log.d("TAG", msg);
                 textView.setText(msg);
             } else if (resultCode == Activity.RESULT_CANCELED) {
+                Toast.makeText(PayhereActivity.this, "result canceled", Toast.LENGTH_SHORT).show();
                 if (response != null)
                     textView.setText(response.toString());
                 else
@@ -147,15 +154,20 @@ public class PayhereActivity extends AppCompatActivity {
         }
     }
 
+
+
+
+
+
 //    @Override
 //    protected void onActivityResult(int requestCode, int resultCode, Intent data ) {
 //        super.onActivityResult(requestCode, resultCode, data);
-//        if (requestCode == PAYHERE_REQUEST && data != null && data.hasExtra(PHConstants.INTENT_EXTRA_RESULT)) {
+//        if (requestCode == PAYHERE_REQUEST && data!=null && data.hasExtra(PHConstants.INTENT_EXTRA_RESULT)) {
 //            PHResponse<StatusResponse> response = (PHResponse<StatusResponse>) data.getSerializableExtra(PHConstants.INTENT_EXTRA_RESULT);
 //            if (resultCode == Activity.RESULT_OK) {
 //                String msg;
-//                if (response != null)
-//                    if (response.isSuccess()){
+//                if (response != null) {
+//                    if (response.isSuccess()) {
 //                        msg = "Activity result:" + response.getData().toString() + resultCode;
 ////                        SharedPreferences.Editor editor = sp.edit();
 ////                        editor.putBoolean("paymentStatus" , true);
@@ -164,27 +176,25 @@ public class PayhereActivity extends AppCompatActivity {
 ////                        Intent intent = new Intent(PayhereActivity.this ,MainActivity.class);
 ////                        intent.putExtra("paymentStatus" , true);
 ////                        startActivity(intent);
-//                    }
-//
-//
-//                    else{
+//                    } else {
 //                        msg = "Result:" + response.toString();
 ////                        Toast.makeText(PayhereActivity.this, "payment unsuccessful", Toast.LENGTH_SHORT).show();
 //                    }
-//
-//                else
+//                }
+//                else {
 //                    msg = "Result: no response";
-//                Log.d("TAG", msg);
-//                textView.setText(msg);
-//                Toast.makeText(PayhereActivity.this, "payment unsuccessful", Toast.LENGTH_SHORT).show();
+//                    Log.d("TAG", msg);
+//                    textView.setText(msg);
+//                    Toast.makeText(PayhereActivity.this, "payment unsuccessful" + msg, Toast.LENGTH_SHORT).show();
+//                }
 //            } else if (resultCode == Activity.RESULT_CANCELED) {
 //                if (response != null){
 //                    textView.setText(response.toString());
-//                    Toast.makeText(PayhereActivity.this, "payment unsuccessful", Toast.LENGTH_SHORT).show();
+//                    Toast.makeText(PayhereActivity.this, "payment unsuccessful else if ", Toast.LENGTH_SHORT).show();
 //                }
 //                else{
 //                    textView.setText("User canceled the request");
-//                    Toast.makeText(PayhereActivity.this, "payment unsuccessful", Toast.LENGTH_SHORT).show();
+//                    Toast.makeText(PayhereActivity.this, "payment unsuccessful else", Toast.LENGTH_SHORT).show();
 //                }
 //            }
 //        }
