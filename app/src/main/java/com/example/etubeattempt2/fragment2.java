@@ -1,5 +1,6 @@
 package com.example.etubeattempt2;
 
+import android.app.Activity;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -103,7 +104,19 @@ public class fragment2 extends Fragment {
         }
     }
 
-    A
+    @Override
+    public void onStop() {
+        super.onStop();
+        adapter.stopListening();
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        adapter.startListening();
+    }
+
+
 
 
 
