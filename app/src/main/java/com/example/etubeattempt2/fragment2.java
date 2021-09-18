@@ -113,7 +113,9 @@ public class fragment2 extends Fragment {
     @Override
     public void onStart() {
         super.onStart();
-        adapter.startListening();
+        if(adapter!=null) {
+            adapter.startListening();
+        }
     }
 
 

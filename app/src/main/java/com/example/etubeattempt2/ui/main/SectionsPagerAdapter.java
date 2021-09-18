@@ -11,6 +11,7 @@ import androidx.fragment.app.FragmentPagerAdapter;
 import com.example.etubeattempt2.R;
 import com.example.etubeattempt2.fragment1;
 import com.example.etubeattempt2.fragment2;
+import com.example.etubeattempt2.fragment3;
 
 /**
  * A [FragmentPagerAdapter] that returns a fragment corresponding to
@@ -38,7 +39,7 @@ public class SectionsPagerAdapter extends FragmentPagerAdapter {
                 fragment=new fragment2();
                 break;
             case 2:
-                fragment=new fragment2();
+                fragment=new fragment3();
                 break;
         }
         // getItem is called to instantiate the fragment for the given page.
