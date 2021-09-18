@@ -39,28 +39,18 @@ public class fragment2 extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+
         View v = inflater.inflate(R.layout.fragment2_layout, container, false);
-
-        payOnline23 = v.findViewById(R.id.payOnline23);
-//        payOnline22 = v.findViewById(R.id.payOnline22);
-//        payonline21 = v.findViewById(R.id.payOnline21);
-//        payonline21R = v.findViewById(R.id.payOnline21R);
-//        payCash23 = v.findViewById(R.id.payCash23);
-//        payCash22 = v.findViewById(R.id.payCash22);
-//        payCash21 = v.findViewById(R.id.payCash21);
-//        payCash21R = v.findViewById(R.id.payCash21R);
-
-        LocalDate currentDate = LocalDate.now();
-        Month currentMonth = currentDate.getMonth();
-        monthStr = currentMonth.toString();
-
         firebaseFirestore = FirebaseFirestore.getInstance();
         firestoreList = v.findViewById(R.id.firestoreList);
+
+        firestoreList.setLayoutManager(new LinearLayoutManager(getContext()));
+
 
         //query
         Query query = firebaseFirestore.collection("products");
 
-        //recycler option
+        //recycler option -- onstart
         FirestoreRecyclerOptions<ProductsModel> options = new FirestoreRecyclerOptions.Builder<ProductsModel>()
                 .setQuery(query, ProductsModel.class)
                 .build();
@@ -77,20 +67,24 @@ public class fragment2 extends Fragment {
             protected void onBindViewHolder(@NonNull ProductsViewHolder holder, int position, @NonNull ProductsModel model) {
                 holder.listCapital.setText(model.getTitle());
                 holder.listIsland.setText(model.getDate());
-                String documentId = getSnapshots().getSnapshot(position).getId();
-                Toast.makeText(getActivity(), documentId, Toast.LENGTH_SHORT).show();
+//                String documentId = getSnapshots().getSnapshot(position).getId();
+//                Toast.makeText(getActivity(), documentId, Toast.LENGTH_SHORT).show();
 
             }
             //view holder
         };
         firestoreList.setHasFixedSize(true);
-        firestoreList.setLayoutManager(new LinearLayoutManager(getActivity()));
+        firestoreList.setLayoutManager(new LinearLayoutManager(getContext()));
         firestoreList.setAdapter(adapter);
 
+
+
+
         return v;
+
     }
 
-    private class ProductsViewHolder extends RecyclerView.ViewHolder {
+    public static class ProductsViewHolder extends RecyclerView.ViewHolder {
 
         private TextView listCapital;
         private TextView listIsland;
@@ -104,6 +98,9 @@ public class fragment2 extends Fragment {
         }
     }
 
+
+
+
     @Override
     public void onStop() {
         super.onStop();
@@ -114,7 +111,23 @@ public class fragment2 extends Fragment {
     public void onStart() {
         super.onStart();
         adapter.startListening();
+
     }
+
+//    @Override
+//    public void setUserVisibleHint(boolean isVisibleToUser) {
+//        super.setUserVisibleHint(isVisibleToUser);
+//        if (isVisibleToUser) {
+//
+//
+//
+//
+//        }
+//        else {
+//        }
+//    }
+
+
 
 
 

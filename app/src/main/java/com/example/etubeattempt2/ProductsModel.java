@@ -4,6 +4,9 @@ public class ProductsModel {
     private String title;
     private String date;
 
+    public ProductsModel() {
+    }
+
     public ProductsModel(String title, String date) {
         this.title = title;
         this.date = date;
