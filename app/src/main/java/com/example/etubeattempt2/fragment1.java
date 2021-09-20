@@ -1,5 +1,6 @@
 package com.example.etubeattempt2;
 
+import android.app.usage.NetworkStats;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -15,98 +16,88 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
+import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.firestore.Query;
 
 import java.util.ArrayList;
 
 public class fragment1 extends Fragment {
 
-//    RecyclerView recyclerView;
-//    private FirebaseFirestore db;
-////    DatabaseReference databaseReference;
-//    MyAdapter myAdapter;
-//    ArrayList<User> list;
-    @Nullable
+
+    private FirebaseFirestore db;
+    private FirebaseUser currentFirebaseUser;
+    private  TextView textView;
+    private DocumentReference documentReference;
+
     @Override
 
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View v= inflater.inflate(R.layout.fragment1_layout,container,false);
-//
-//        db = FirebaseFirestore.getInstance();
-//        recyclerView = v.findViewById(R.id.userList);
-//        recyclerView.setHasFixedSize(true);
-//        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-//
-//        list = new ArrayList<>();
-//        myAdapter = new MyAdapter(getActivity(),list);
-//        recyclerView.setAdapter(myAdapter);
+        View v = inflater.inflate(R.layout.fragment1_layout, container, false);
+
+        db = FirebaseFirestore.getInstance();
+
+        currentFirebaseUser = FirebaseAuth.getInstance().getCurrentUser() ;
+        textView = v.findViewById(R.id.textView);
 
 
 
 
 
+        documentReference = db.collection("orders").document(currentFirebaseUser.getUid());
+        documentReference.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if (task.isSuccessful()) {
+                    DocumentSnapshot snapshot = task.getResult();
+                    if (snapshot != null && snapshot.exists()) {
+
+                        //if the fileld doesnt exist app is going to crash look into that shit
+                        Toast.makeText(getContext(), snapshot.getData().toString(), Toast.LENGTH_SHORT).show();
+                    } else {
+                        Toast.makeText(getContext(), "snapshot =  null", Toast.LENGTH_SHORT).show();
+//                        Log.d(TAG, "No such document");
+                    }
+                } else {
+                    Log.d("TAG", "get failed with ", task.getException());
+
+                }
+            }
+        });
 
 
+        documentReference.addSnapshotListener(new EventListener<DocumentSnapshot>() {
+            @Override
+            public void onEvent(@Nullable DocumentSnapshot snapshot, @Nullable FirebaseFirestoreException error) {
+                if (snapshot != null && snapshot.exists()) {
+
+                    //if the fileld doesnt exist app is going to crash look into that shit
+                    Toast.makeText(getContext(), snapshot.getData().toString(), Toast.LENGTH_SHORT).show();
+                    textView.setText(snapshot.getData().toString());
+                } else {
+                    Toast.makeText(getContext(), "snapshot =  null", Toast.LENGTH_SHORT).show();
+//                        Log.d(TAG, "No such document");
+                }
 
 
-//        DocumentReference docRef = db.collection("products").document("2021");
-//        docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-//
-//            @Override
-//            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-//                if (task.isSuccessful()) {
-//                    Log.d("TAG", "No such document");
-//                    DocumentSnapshot document = task.getResult();
-//                    if (document != null && document.exists()) {
-//                        Toast.makeText(getActivity(), document.getData().toString(), Toast.LENGTH_SHORT).show();
-//
-////                        User user = (User) document.getData();
-////                        String teams = document.getString("teams"); //Print the name
-////                        matchName.setText(teams);
-//                    } else {
-//                        Log.d("TAG", "No such document");
-//                        Toast.makeText(getActivity(), "No document", Toast.LENGTH_SHORT).show();
-//                    }
-//                } else {
-//                    Log.d("TAG", "get failed with ", task.getException());
-//                    Toast.makeText(getActivity(), "working thorugh 2", Toast.LENGTH_SHORT).show();
-//                }
-//            }
-//        });
+            }
 
-//        DocumentReference docRef = db.collection("cities").document("SL");
-//        docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-//
-//            @Override
-//            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-//                if (task.isSuccessful()) {
-//                    Log.d("TAG", "No such document");
-//                    DocumentSnapshot document = task.getResult();
-//                    if (document != null && document.exists()) {
-////                        String teams = document.getString("teams"); //Print the name
-//////                        matchName.setText(teams);
-//                    } else {
-//                        Log.d("TAG", "No such document");
-//                    }
-//                } else {
-//                    Log.d("TAG", "get failed with ", task.getException());
-//                    Toast.makeText(MainActivity2.this, "working thorugh 2", Toast.LENGTH_SHORT).show();
-//                }
-//            }
-//        });
+        });
 
 
-
-
-
-
-
-
-
-        return v;
+                    return v;
+                }
     }
-}
+
+
+
+

@@ -18,13 +18,12 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
-import com.google.firebase.firestore.QuerySnapshot;
+import com.google.firebase.firestore.SetOptions;
 
 import java.time.LocalDate;
 import java.time.Month;
@@ -33,10 +32,10 @@ import java.util.Map;
 
 public class fragment2 extends Fragment {
 
-    Button payCash;
-    String monthStr;
-    FirebaseFirestore firebaseFirestore;
-    RecyclerView firestoreList;
+    private Button payCash;
+    private String monthStr;
+    private FirebaseFirestore firebaseFirestore;
+    private RecyclerView firestoreList;
     private FirestoreRecyclerAdapter adapter;
     private FirebaseAuth auth;
 
@@ -89,9 +88,16 @@ public class fragment2 extends Fragment {
                     @Override
                     public void onClick(View view) {
                         Toast.makeText(getContext(), "get title" + model.getTitle() , Toast.LENGTH_SHORT).show();
+                        storeOrderInfo(monthStr , model.getTitle());
 
                     }
                 });
+//                holder.itemView.setOnClickListener(new View.OnClickListener() {
+//                    @Override
+//                    public void onClick(View view) {
+//                        Toast.makeText(getContext(), "get title" + model.getTitle() , Toast.LENGTH_SHORT).show();
+//                    }
+//                });
 
             }
             //view holder
@@ -141,13 +147,17 @@ public class fragment2 extends Fragment {
 
     private void storeOrderInfo(String monthStr , String classInfo) {
         FirebaseUser user = auth.getCurrentUser();
-        DocumentReference documentReference = firebaseFirestore.collection("Users").document(user.getUid());
+        DocumentReference documentReference = firebaseFirestore.collection("orders").document(user.getUid());
         Map<String,Object> userInfo= new HashMap<>();
         userInfo.put(classInfo,monthStr);
 
-        documentReference.set(userInfo);
+        //merging is done (if there is no document will be created upon request)
+
+        documentReference.set(userInfo, SetOptions.merge());
 
     }
+
+
 }
 
 
