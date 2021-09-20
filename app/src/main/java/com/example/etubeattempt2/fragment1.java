@@ -25,18 +25,18 @@ import java.util.ArrayList;
 
 public class fragment1 extends Fragment {
 
-    RecyclerView recyclerView;
-    private FirebaseFirestore db;
-//    DatabaseReference databaseReference;
-    MyAdapter myAdapter;
-    ArrayList<User> list;
+//    RecyclerView recyclerView;
+//    private FirebaseFirestore db;
+////    DatabaseReference databaseReference;
+//    MyAdapter myAdapter;
+//    ArrayList<User> list;
     @Nullable
     @Override
 
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View v= inflater.inflate(R.layout.fragment1_layout,container,false);
-
-        db = FirebaseFirestore.getInstance();
+//
+//        db = FirebaseFirestore.getInstance();
 //        recyclerView = v.findViewById(R.id.userList);
 //        recyclerView.setHasFixedSize(true);
 //        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
@@ -53,30 +53,30 @@ public class fragment1 extends Fragment {
 
 
 
-        DocumentReference docRef = db.collection("products").document("2021");
-        docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-
-            @Override
-            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                if (task.isSuccessful()) {
-                    Log.d("TAG", "No such document");
-                    DocumentSnapshot document = task.getResult();
-                    if (document != null && document.exists()) {
-                        Toast.makeText(getActivity(), document.getData().toString(), Toast.LENGTH_SHORT).show();
-
-//                        User user = (User) document.getData();
-//                        String teams = document.getString("teams"); //Print the name
-//                        matchName.setText(teams);
-                    } else {
-                        Log.d("TAG", "No such document");
-                        Toast.makeText(getActivity(), "No document", Toast.LENGTH_SHORT).show();
-                    }
-                } else {
-                    Log.d("TAG", "get failed with ", task.getException());
-                    Toast.makeText(getActivity(), "working thorugh 2", Toast.LENGTH_SHORT).show();
-                }
-            }
-        });
+//        DocumentReference docRef = db.collection("products").document("2021");
+//        docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+//
+//            @Override
+//            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+//                if (task.isSuccessful()) {
+//                    Log.d("TAG", "No such document");
+//                    DocumentSnapshot document = task.getResult();
+//                    if (document != null && document.exists()) {
+//                        Toast.makeText(getActivity(), document.getData().toString(), Toast.LENGTH_SHORT).show();
+//
+////                        User user = (User) document.getData();
+////                        String teams = document.getString("teams"); //Print the name
+////                        matchName.setText(teams);
+//                    } else {
+//                        Log.d("TAG", "No such document");
+//                        Toast.makeText(getActivity(), "No document", Toast.LENGTH_SHORT).show();
+//                    }
+//                } else {
+//                    Log.d("TAG", "get failed with ", task.getException());
+//                    Toast.makeText(getActivity(), "working thorugh 2", Toast.LENGTH_SHORT).show();
+//                }
+//            }
+//        });
 
 //        DocumentReference docRef = db.collection("cities").document("SL");
 //        docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {

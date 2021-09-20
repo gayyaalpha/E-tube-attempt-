@@ -1,6 +1,5 @@
 package com.example.etubeattempt2;
 
-import android.app.Activity;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -10,8 +9,6 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.annotation.CallSuper;
-import androidx.annotation.MainThread;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
@@ -21,19 +18,27 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
+import com.google.firebase.firestore.QuerySnapshot;
 
 import java.time.LocalDate;
 import java.time.Month;
+import java.util.HashMap;
+import java.util.Map;
 
 public class fragment2 extends Fragment {
-    Button payOnline23, payOnline22, payonline21, payonline21R;
-    Button payCash23, payCash22, payCash21, payCash21R;
+
+    Button payCash;
     String monthStr;
     FirebaseFirestore firebaseFirestore;
     RecyclerView firestoreList;
     private FirestoreRecyclerAdapter adapter;
+    private FirebaseAuth auth;
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     @Nullable
@@ -41,14 +46,9 @@ public class fragment2 extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment2_layout, container, false);
 
-        payOnline23 = v.findViewById(R.id.payOnline23);
-//        payOnline22 = v.findViewById(R.id.payOnline22);
-//        payonline21 = v.findViewById(R.id.payOnline21);
-//        payonline21R = v.findViewById(R.id.payOnline21R);
-//        payCash23 = v.findViewById(R.id.payCash23);
-//        payCash22 = v.findViewById(R.id.payCash22);
-//        payCash21 = v.findViewById(R.id.payCash21);
-//        payCash21R = v.findViewById(R.id.payCash21R);
+
+        payCash = v.findViewById(R.id.payCash);
+
 
         LocalDate currentDate = LocalDate.now();
         Month currentMonth = currentDate.getMonth();
@@ -56,29 +56,42 @@ public class fragment2 extends Fragment {
 
         firebaseFirestore = FirebaseFirestore.getInstance();
         firestoreList = v.findViewById(R.id.firestoreList);
-
-        //query
+        auth = FirebaseAuth.getInstance();
+        //query(get data from the collection)
         Query query = firebaseFirestore.collection("products");
 
-        //recycler option
+        //recycler option(using the setters products model class is taking the necessary values from the firestore database)
         FirestoreRecyclerOptions<ProductsModel> options = new FirestoreRecyclerOptions.Builder<ProductsModel>()
                 .setQuery(query, ProductsModel.class)
                 .build();
+        // query and the adapter was connected using the firestore adapter
 
         adapter = new FirestoreRecyclerAdapter<ProductsModel, ProductsViewHolder>(options) {
             @NonNull
             @Override
+            //products view holder and single list item xml file got connected
             public ProductsViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
                 View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_item_single, parent, false);
                 return new ProductsViewHolder(view);
             }
-
+//
             @Override
             protected void onBindViewHolder(@NonNull ProductsViewHolder holder, int position, @NonNull ProductsModel model) {
+//                Task<QuerySnapshot> user =  query.get(position);
                 holder.listCapital.setText(model.getTitle());
                 holder.listIsland.setText(model.getDate());
-                String documentId = getSnapshots().getSnapshot(position).getId();
-                Toast.makeText(getActivity(), documentId, Toast.LENGTH_SHORT).show();
+//                holder.position = position;
+//                holder.user = user;
+//                String documentId = getSnapshots().getSnapshot(position).getId();
+//                Toast.makeText(getActivity(), documentId, Toast.LENGTH_SHORT).show();
+                //pay online button function
+                holder.payOnline.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        Toast.makeText(getContext(), "get title" + model.getTitle() , Toast.LENGTH_SHORT).show();
+
+                    }
+                });
 
             }
             //view holder
@@ -87,6 +100,9 @@ public class fragment2 extends Fragment {
         firestoreList.setLayoutManager(new LinearLayoutManager(getActivity()));
         firestoreList.setAdapter(adapter);
 
+
+
+
         return v;
     }
 
@@ -94,12 +110,18 @@ public class fragment2 extends Fragment {
 
         private TextView listCapital;
         private TextView listIsland;
+        private Button payOnline;
+
 
         public ProductsViewHolder(@NonNull View itemView) {
             super(itemView);
 
             listCapital = itemView.findViewById(R.id.listCapital);
             listIsland = itemView.findViewById(R.id.listIsland);
+            payOnline= itemView.findViewById(R.id.payOnline);
+
+
+
 
         }
     }
@@ -113,17 +135,19 @@ public class fragment2 extends Fragment {
     @Override
     public void onStart() {
         super.onStart();
-        if(adapter!=null) {
+        if(adapter!=null)
             adapter.startListening();
-        }
     }
 
+    private void storeOrderInfo(String monthStr , String classInfo) {
+        FirebaseUser user = auth.getCurrentUser();
+        DocumentReference documentReference = firebaseFirestore.collection("Users").document(user.getUid());
+        Map<String,Object> userInfo= new HashMap<>();
+        userInfo.put(classInfo,monthStr);
 
+        documentReference.set(userInfo);
 
-
-
-
-
+    }
 }
 
 

@@ -27,6 +27,8 @@ public class ProductsModel {
     public void setDate(String date) {
         this.date = date;
     }
+
+
 }
 
 
