@@ -5,42 +5,32 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical">
-
-
-
-
-
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-
             android:layout_margin="5dp"
             android:background="@drawable/bg"
             android:orientation="vertical"
             android:padding="10dp">
-
-
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-
-                android:text="2023-THEORY-"
+                android:id="@+id/titleClass"
+                android:text="Title"
                 android:textColor="@color/black"
                 android:textSize="25dp"
                 android:textStyle="bold" />
 
             <TextView
-                android:id="@+id/listCapital"
+                android:id="@+id/monthClass"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-
-
                 android:text="month"
                 android:textColor="@color/black"
                 android:textSize="25dp" />
 
             <TextView
-                android:id="@+id/listIsland"
+                android:id="@+id/priceClass"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:padding="1dp"

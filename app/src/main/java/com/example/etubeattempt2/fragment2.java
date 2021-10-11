@@ -58,6 +58,7 @@ public class fragment2 extends Fragment {
         auth = FirebaseAuth.getInstance();
         //query(get data from the collection)
         Query query = firebaseFirestore.collection("products");
+//                .whereEqualTo("title" ,"A/L - 2021 ");
 
         //recycler option(using the setters products model class is taking the necessary values from the firestore database)
         FirestoreRecyclerOptions<ProductsModel> options = new FirestoreRecyclerOptions.Builder<ProductsModel>()
@@ -77,8 +78,10 @@ public class fragment2 extends Fragment {
             @Override
             protected void onBindViewHolder(@NonNull ProductsViewHolder holder, int position, @NonNull ProductsModel model) {
 //                Task<QuerySnapshot> user =  query.get(position);
-                holder.listCapital.setText(model.getTitle());
-                holder.listIsland.setText(model.getDate());
+                holder.classTitle.setText(model.getTitle());
+                holder.classMonth.setText(model.getMonth());
+                holder.classPrice.setText(model.getPrice());
+                holder.className = model.getName();
 //                holder.position = position;
 //                holder.user = user;
 //                String documentId = getSnapshots().getSnapshot(position).getId();
@@ -88,7 +91,7 @@ public class fragment2 extends Fragment {
                     @Override
                     public void onClick(View view) {
                         Toast.makeText(getContext(), "get title" + model.getTitle() , Toast.LENGTH_SHORT).show();
-                        storeOrderInfo(monthStr , model.getTitle());
+                        storeOrderInfo(monthStr , holder.className);
 
                     }
                 });
@@ -114,16 +117,18 @@ public class fragment2 extends Fragment {
 
     private class ProductsViewHolder extends RecyclerView.ViewHolder {
 
-        private TextView listCapital;
-        private TextView listIsland;
+        private TextView classTitle;
+        private TextView classMonth;
+        private TextView classPrice;
         private Button payOnline;
+        private String className;
 
 
         public ProductsViewHolder(@NonNull View itemView) {
             super(itemView);
-
-            listCapital = itemView.findViewById(R.id.listCapital);
-            listIsland = itemView.findViewById(R.id.listIsland);
+            classTitle  = itemView.findViewById(R.id.titleClass);
+            classMonth = itemView.findViewById(R.id.monthClass);
+            classPrice = itemView.findViewById(R.id.priceClass);
             payOnline= itemView.findViewById(R.id.payOnline);
 
 
@@ -147,9 +152,9 @@ public class fragment2 extends Fragment {
 
     private void storeOrderInfo(String monthStr , String classInfo) {
         FirebaseUser user = auth.getCurrentUser();
-        DocumentReference documentReference = firebaseFirestore.collection("orders").document(user.getUid());
+        DocumentReference documentReference = firebaseFirestore.collection("orders").document("uid").collection(user.getUid()).document(classInfo);
         Map<String,Object> userInfo= new HashMap<>();
-        userInfo.put(classInfo,monthStr);
+        userInfo.put(monthStr,"true");
 
         //merging is done (if there is no document will be created upon request)
 
